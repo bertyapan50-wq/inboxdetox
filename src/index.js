@@ -6,9 +6,10 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  // ✅ REMOVED: React.StrictMode to prevent double API calls in development
+  // Note: StrictMode causes useEffect to run twice in dev mode
+  // This was causing duplicate /api/email/emails calls
+  <App />
 );
 
 // If you want to start measuring performance in your app, pass a function

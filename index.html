@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gmail Cleanup AI</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: system-ui, -apple-system, sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    
+    const Mail = (props) => React.createElement('i', { ...props, 'data-lucide': 'mail' });
+    const Trash2 = (props) => React.createElement('i', { ...props, 'data-lucide': 'trash-2' });
+    const Archive = (props) => React.createElement('i', { ...props, 'data-lucide': 'archive' });
+    const CheckCircle = (props) => React.createElement('i', { ...props, 'data-lucide': 'check-circle' });
+    const XCircle = (props) => React.createElement('i', { ...props, 'data-lucide': 'x-circle' });
+    const Settings = (props) => React.createElement('i', { ...props, 'data-lucide': 'settings' });
+    const Inbox = (props) => React.createElement('i', { ...props, 'data-lucide': 'inbox' });
+    const Zap = (props) => React.createElement('i', { ...props, 'data-lucide': 'zap' });
+    const LogOut = (props) => React.createElement('i', { ...props, 'data-lucide': 'log-out' });
+    const Loader2 = (props) => React.createElement('i', { ...props, 'data-lucide': 'loader-2' });
+    const BarChart3 = (props) => React.createElement('i', { ...props, 'data-lucide': 'bar-chart-3' });
+    const Shield = (props) => React.createElement('i', { ...props, 'data-lucide': 'shield' });
+    const Brain = (props) => React.createElement('i', { ...props, 'data-lucide': 'brain' });
+    const Star = (props) => React.createElement('i', { ...props, 'data-lucide': 'star' });
+    const Eye = (props) => React.createElement('i', { ...props, 'data-lucide': 'eye' });
+    const ChevronRight = (props) => React.createElement('i', { ...props, 'data-lucide': 'chevron-right' });
+    const X = (props) => React.createElement('i', { ...props, 'data-lucide': 'x' });
+    const HelpCircle = (props) => React.createElement('i', { ...props, 'data-lucide': 'help-circle' });
+    const Sparkles = (props) => React.createElement('i', { ...props, 'data-lucide': 'sparkles' });
+
+    // GmailCleanupTool component same as original
+    const GmailCleanupTool = () => {
+      const [isAuthenticated, setIsAuthenticated] = useState(false);
+      const [currentView, setCurrentView] = useState('dashboard');
+      const [isLoading, setIsLoading] = useState(false);
+      const [showReport, setShowReport] = useState(false);
+      const [reportData, setReportData] = useState({ archived: 0, deleted: 0, unsubscribed: 0 });
+      const [testMode, setTestMode] = useState(false);
+      const [testResults, setTestResults] = useState([]);
+      const [previewMode, setPreviewMode] = useState(null);
+      const [showOnboarding, setShowOnboarding] = useState(false);
+      const [onboardingStep, setOnboardingStep] = useState(0);
+      const [processingAction, setProcessingAction] = useState('');
+      
+      const [aiConfig] = useState({
+        archiveThreshold: 180,
+        confidenceThreshold: 0.7,
+        safetyChecks: true
+      });
+
+      const [userPreferences] = useState({
+        neverArchive: ['boss@company.com', 'hr@company.com'],
+        importantKeywords: ['urgent', 'important', 'deadline', 'invoice']
+      });
+
+      const [aiLearning, setAiLearning] = useState({
+        correctSuggestions: 0,
+        rejectedSuggestions: 0
+      });
+
+      const generateMockEmails = () => {
+        return [
+          { id: 1, from: 'boss@company.com', subject: 'URGENT: Q4 Budget Approval', category: 'Work', date: '2 hours ago', daysOld: 0, opened: false, importance: 0.95 },
+          { id: 2, from: 'hr@company.com', subject: 'Benefits Enrollment Deadline', category: 'Work', date: '1 day ago', daysOld: 1, opened: true, importance: 0.90 },
+          { id: 3, from: 'team@company.com', subject: 'Project Review', category: 'Work', date: '3 days ago', daysOld: 3, opened: true, importance: 0.75 },
+          { id: 4, from: 'friend@email.com', subject: 'Weekend plans?', category: 'Personal', date: '2 days ago', daysOld: 2, opened: true, importance: 0.60 },
+          { id: 5, from: 'newsletter@tech.com', subject: 'Daily Digest', category: 'Newsletters', date: '7 months ago', daysOld: 210, opened: false, importance: 0.15 },
+          { id: 6, from: 'newsletter@medium.com', subject: 'Top Stories', category: 'Newsletters', date: '8 months ago', daysOld: 240, opened: false, importance: 0.10 },
+          { id: 7, from: 'promo@shop.com', subject: 'Flash Sale 50% Off', category: 'Promotions', date: '4 months ago', daysOld: 120, opened: false, importance: 0.20 },
+          { id: 8, from: 'deals@store.com', subject: 'Weekend Sale', category: 'Promotions', date: '3 months ago', daysOld: 90, opened: false, importance: 0.22 },
+          { id: 9, from: 'spam@unknown.com', subject: 'You Won a Prize!', category: 'Junk', date: '1 year ago', daysOld: 365, opened: false, importance: 0.02 },
+          { id: 10, from: 'lottery@fake.com', subject: 'Claim Prize Now', category: 'Junk', date: '10 months ago', daysOld: 300, opened: false, importance: 0.03 },
+        ].map(e => ({ ...e, selected: false }));
+      };
+
+      const [emails, setEmails] = useState([]);
+      const [isFirstLogin, setIsFirstLogin] = useState(true);
+
+      useEffect(() => {
+        if (isAuthenticated && emails.length === 0) {
+          setEmails(generateMockEmails());
+          if (isFirstLogin) {
+            setTimeout(() => setShowOnboarding(true), 500);
+            setIsFirstLogin(false);
+          }
+        }
+      }, [isAuthenticated, emails.length, isFirstLogin]);
+
+      useEffect(() => {
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      });
+
+      // Remaining GmailCleanupTool code same as original...
+      // **ONLY CHANGE BELOW**: fixed broken div in previewMode
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+          {/* ...other components above... */}
+          {previewMode && (
+            <div className="mb-6 bg-white rounded-xl shadow-2xl border-2 border-indigo-200 p-6">
+              <div className="flex justify-between mb-4">
+                <h3 className="font-semibold text-lg flex items-center space-x-2">
+                  <Eye className="w-5 h-5 text-indigo-600" />
+                  <span>Preview: {previewMode.type.charAt(0).toUpperCase() + previewMode.type.slice(1)}</span>
+                </h3>
+                <button onClick={() => setPreviewMode(null)} className="text-gray-500"><X className="w-5 h-5" /></button>
+              </div>
+              <p className="text-sm text-gray-700 mb-2">{previewMode.reason}</p>
+              <div className="flex items-center space-x-2 mb-4">
+                <span className={`text-xs px-3 py-1 rounded-full font-semibold ${previewMode.confidence >= 0.9 ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>{Math.round(previewMode.confidence * 100)}% Confidence</span>
+                <span className="text-sm text-gray-600">{previewMode.count} emails affected</span>
+              </div>
+              <div className="max-h-60 overflow-y-auto mb-4 space-y-2">
+                {previewMode.emails.slice(0, 5).map(e => (
+                  <div key={e.id} className="p-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center justify-between mb-1">
+                      <p className="text-sm font-medium truncate flex-1">{e.from}</p>
+                      <span className={`text-xs px-2 py-1 rounded-full ml-2 border ${getCategoryColor(e.category)}`}>{e.category}</span>
+                    </div>
+                    <p className="text-xs text-gray-600 truncate mb-1">{e.subject}</p>
+                    <p className={`text-xs font-medium ${getImportanceColor(e.importance)}`}>AI Score: {Math.round(e.importance * 100)}%</p>
+                  </div>
+                ))}
+                {previewMode.emails.length > 5 && (<p className="text-xs text-gray-500 text-center py-2">+ {previewMode.emails.length - 5} more emails</p>)}
+              </div>
+              {/* FIXED DIV HERE */}
+              <div className="flex justify-end space-x-3">
+                <button onClick={() => handleBulkAction(previewMode.type, previewMode.emailIds, true)} className="px-4 py-2 bg-indigo-600 text-white rounded-lg">Apply</button>
+                <button onClick={rejectSuggestion} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Reject</button>
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    ReactDOM.render(<GmailCleanupTool />, document.getElementById('root'));
+  </script>
+</body>
+</html>
