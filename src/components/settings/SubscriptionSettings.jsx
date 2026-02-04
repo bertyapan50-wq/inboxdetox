@@ -32,7 +32,7 @@ export default function SubscriptionSettings({ user }) {
   const loadSubscription = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/settings/subscription/current', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/settings/subscription/current`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -49,7 +49,7 @@ export default function SubscriptionSettings({ user }) {
 
   const loadPaymentHistory = async () => {
     try {
-      const response = await fetch('/api/settings/subscription/payment-history', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/settings/subscription/payment-history`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -65,7 +65,7 @@ export default function SubscriptionSettings({ user }) {
   const handleUpgrade = async (tier, cycle) => {
     setProcessing(true);
     try {
-      const response = await fetch('/api/subscription/paymongo/create-checkout', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/subscription/paymongo/create-checkout`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -94,7 +94,7 @@ export default function SubscriptionSettings({ user }) {
 
     setProcessing(true);
     try {
-      const response = await fetch('/api/settings/subscription/cancel', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/settings/subscription/cancel`, {
         method: 'POST',
         credentials: 'include'
       });
@@ -118,7 +118,7 @@ export default function SubscriptionSettings({ user }) {
   const handleReactivateSubscription = async () => {
     setProcessing(true);
     try {
-      const response = await fetch('/api/settings/subscription/reactivate', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/settings/subscription/reactivate`, {
         method: 'POST',
         credentials: 'include'
       });
@@ -141,7 +141,7 @@ export default function SubscriptionSettings({ user }) {
 
   const downloadInvoice = async (invoiceId) => {
     try {
-      const response = await fetch(`/api/settings/subscription/invoice/${invoiceId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/settings/subscription/invoice/${invoiceId}`, {
         credentials: 'include'
       });
       

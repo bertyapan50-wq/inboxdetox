@@ -53,7 +53,7 @@ export default function Categories() {
     setLoading(true);
     try {
       // Replace with your actual API endpoint
-      const response = await fetch('${process.env.REACT_APP_API_URL}/api/categories', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -91,7 +91,7 @@ export default function Categories() {
     }
 
     try {
-      const response = await fetch('${process.env.REACT_APP_API_URL}/api/categories', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
