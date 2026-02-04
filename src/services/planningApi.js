@@ -20,7 +20,7 @@ export const generatePlan = async (date = null) => {
 
     return await response.json();
   } catch (error) {
-    console.error('API Error (generatePlan):', error);
+    console.error(`API Error (generatePlan):`, error);
     throw error;
   }
 };

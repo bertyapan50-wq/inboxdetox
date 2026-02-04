@@ -15,32 +15,14 @@ function SuggestionsView() {
     
     console.log('💡 Loading AI suggestions...');
     
-    // ✅ Step 1: Fetch emails first
-    const emailsResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/email/list`, {
-      method: 'GET',
-      credentials: 'include'
-    });
-    
-    if (!emailsResponse.ok) {
-      throw new Error('Failed to fetch emails');
-    }
-    
-    const emailsData = await emailsResponse.json();
-    const emails = emailsData.emails || [];
-    
-    console.log(`📧 Fetched ${emails.length} emails`);
-    
-    // ✅ Step 2: Send emails to analyze endpoint
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/analyze`, {
+    // ✅ This endpoint fetches emails itself!
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/suggestions/analyze`, {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ emails })  // ✅ Send emails array
+      }
     });
-
-    console.log('📡 Response status:', response.status);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
