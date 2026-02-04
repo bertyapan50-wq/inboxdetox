@@ -23,7 +23,7 @@ export default function ActivityLog({ user }) {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/activity?page=${page}&limit=50`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/activity?page=${page}&limit=50`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
