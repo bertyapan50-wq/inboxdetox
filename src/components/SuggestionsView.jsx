@@ -9,43 +9,60 @@ function SuggestionsView() {
   const [completedCount, setCompletedCount] = useState(0);
 
   const loadSuggestions = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      console.log('💡 Loading AI suggestions...');
-      
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/analyze`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-
-      console.log('📡 Response status:', response.status);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      
-      console.log('✅ Suggestions loaded:', data);
-      
-      if (data.success) {
-        setSuggestions(data.suggestions || []);
-        setCompletedCount(0);
-      } else {
-        throw new Error(data.error || 'Failed to load suggestions');
-      }
-    } catch (err) {
-      console.error('❌ Error loading suggestions:', err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  try {
+    setLoading(true);
+    setError(null);
+    
+    console.log('💡 Loading AI suggestions...');
+    
+    // ✅ Step 1: Fetch emails first
+    const emailsResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/email/list`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+    
+    if (!emailsResponse.ok) {
+      throw new Error('Failed to fetch emails');
     }
-  };
+    
+    const emailsData = await emailsResponse.json();
+    const emails = emailsData.emails || [];
+    
+    console.log(`📧 Fetched ${emails.length} emails`);
+    
+    // ✅ Step 2: Send emails to analyze endpoint
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/analyze`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ emails })  // ✅ Send emails array
+    });
+
+    console.log('📡 Response status:', response.status);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    
+    console.log('✅ Suggestions loaded:', data);
+    
+    if (data.success) {
+      setSuggestions(data.suggestions || []);
+      setCompletedCount(0);
+    } else {
+      throw new Error(data.error || 'Failed to load suggestions');
+    }
+  } catch (err) {
+    console.error('❌ Error loading suggestions:', err);
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     loadSuggestions();
