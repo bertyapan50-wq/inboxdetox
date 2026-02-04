@@ -36,7 +36,7 @@ export default function ConnectedAccounts() {
   const loadAccounts = async () => {
     setLoading(true);
     try {
-      const response = await fetch('${process.env.REACT_APP_API_URL}/api/settings/connected-accounts', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/settings/connected-accounts`, {
         credentials: 'include'
       });
       const data = await response.json();
