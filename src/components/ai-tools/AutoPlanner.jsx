@@ -148,7 +148,6 @@ const handleDeleteTask = async (taskId) => {
   }
 };
   const pendingTasks = tasks.filter(t => t.status === 'pending');
-  const scheduledTasks = tasks.filter(t => t.status === 'scheduled');
   const completedTasks = tasks.filter(t => t.status === 'completed');
   
   const completionRate = tasks.length > 0 
