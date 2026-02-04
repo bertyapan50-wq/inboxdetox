@@ -53,7 +53,7 @@ export default function Categories() {
     setLoading(true);
     try {
       // Replace with your actual API endpoint
-      const response = await fetch('/api/categories', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/categories', {
         credentials: 'include'
       });
       const data = await response.json();
@@ -91,7 +91,7 @@ export default function Categories() {
     }
 
     try {
-      const response = await fetch('/api/categories', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/categories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -133,7 +133,7 @@ export default function Categories() {
 
   const updateCategory = async (id, updates) => {
     try {
-      const response = await fetch(`/api/categories/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -166,7 +166,7 @@ export default function Categories() {
     }
 
     try {
-      const response = await fetch(`/api/categories/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/categories/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });

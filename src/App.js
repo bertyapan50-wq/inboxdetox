@@ -1,5 +1,6 @@
 
 // ✅ ADD THIS IMPORT
+import AuthCallback from './pages/AuthCallback';
 import { ThemeProvider } from './contexts/ThemeContext';
 import ActionableDashboard from './components/ActionableDashboard';
 import React, { useState, useEffect } from 'react';
@@ -119,26 +120,20 @@ useEffect(() => {
   // Check if user is authenticated
   const checkAuth = async () => {
   try {
-    const response = await fetch('/api/auth/user', {
-      credentials: 'include'
+    const token = localStorage.getItem('token');
+    
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/user`, {
+      credentials: 'include',
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     });
     const data = await response.json();
     
     if (data.success) {
       setIsAuthenticated(true);
       setUser(data.user);
-      
-      // ✅ NEW: Check if there's a stored referral code
-      const storedRefCode = localStorage.getItem('referralCode');
-      if (storedRefCode && !data.user.referredBy) {
-        await applyReferralCode(storedRefCode, data.user._id);
-        localStorage.removeItem('referralCode');
-      }
-      
       loadRealEmails();
       loadFollowUps();
     }
-
   } catch (error) {
     console.error('Auth check failed:', error);
   }
@@ -149,7 +144,7 @@ const applyReferralCode = async (refCode, userId) => {
     console.log('🔄 Applying referral code:', refCode, 'for user:', userId);
     
     // ✅ Get user email from API first
-    const userResponse = await fetch('/api/auth/user', { credentials: 'include' });
+    const userResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/user`, { credentials: 'include' });
     const userData = await userResponse.json();
     
     if (!userData.success) {
@@ -160,7 +155,7 @@ const applyReferralCode = async (refCode, userId) => {
     const userEmail = userData.user.email;
     console.log('📧 User email:', userEmail);
     
-    const response = await fetch('/api/referral/signup', {  
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/referral/signup`, {   
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -268,7 +263,7 @@ const loadRealEmails = async () => {
   try {
     console.log('🔍 Fetching emails from /api/email/emails');
     
-    const response = await fetch('/api/email/emails', {  // ✅ CHANGED: /api/email/emails instead of /api/auth/emails
+    const response = await  fetch(`${process.env.REACT_APP_API_URL}/api/email/emails`, { // ✅ CHANGED: /api/email/emails instead of /api/auth/emails
       credentials: 'include'
     });
     
@@ -746,7 +741,7 @@ const checkDueFollowUps = async () => {
   if (!isAuthenticated) return;
   
   try {
-    const response = await fetch('/api/followups/notifications/due', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/followups/notifications/due`, {
       credentials: 'include'
     });
     const data = await response.json();
@@ -784,7 +779,7 @@ const loadFollowUps = async () => {
   
   setFollowUpsLoading(true);
   try {
-    const response = await fetch('/api/followups', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/followups`, {
       credentials: 'include'
     });
     const data = await response.json();
@@ -910,13 +905,13 @@ const calculateSmartCleanupCount = () => {
 
 // Real Gmail OAuth Login
 const handleLogin = () => {
-  window.location.href = 'http://localhost:5000/api/auth/google';
+  window.location.href = `${process.env.REACT_APP_API_URL}/api/auth/google`;
 };
 
 // Real Logout
 const handleLogout = async () => {
   try {
-    await fetch('/api/auth/logout', {
+    await fetch(`${process.env.REACT_APP_API_URL}/api/auth/logout`, {
       credentials: 'include'
     });
     setIsAuthenticated(false);
@@ -934,7 +929,7 @@ const handleDelete = async (selectedIds) => {
   setIsLoading(true);
 
   try {
-    const res = await fetch('/api/email/delete', {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/email/delete`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -1074,6 +1069,10 @@ const rejectSuggestion = () => {
   const selectedCount = emails.filter(e => e.selected).length;
 
  if (!isAuthenticated) {
+  // ✅ Check if this is the OAuth callback
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  // Normal landing page
   return <LandingPage onLogin={handleLogin} />;
 }
   return (
@@ -1962,7 +1961,12 @@ onBulkUnsubscribe={async (emailIds) => {
 const App = () => {
   return (
     <ThemeProvider>
-      <GmailCleanupTool />
+      <Router>
+        <Routes>
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="*" element={<GmailCleanupTool />} />
+        </Routes>
+      </Router>
     </ThemeProvider>
   );
 };

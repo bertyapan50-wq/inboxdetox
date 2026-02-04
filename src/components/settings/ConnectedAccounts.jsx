@@ -36,7 +36,7 @@ export default function ConnectedAccounts() {
   const loadAccounts = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/settings/connected-accounts', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/settings/connected-accounts', {
         credentials: 'include'
       });
       const data = await response.json();
@@ -57,7 +57,7 @@ export default function ConnectedAccounts() {
   const syncAccount = async (accountId) => {
     setSyncing(prev => ({ ...prev, [accountId]: true }));
     try {
-      const response = await fetch(`/api/settings/connected-accounts/${accountId}/sync`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/settings/connected-accounts/${accountId}/sync`, {
         method: 'POST',
         credentials: 'include'
       });
@@ -83,7 +83,7 @@ export default function ConnectedAccounts() {
     }
 
     try {
-      const response = await fetch(`/api/settings/connected-accounts/${accountId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/settings/connected-accounts/${accountId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -109,7 +109,7 @@ export default function ConnectedAccounts() {
     localStorage.setItem('returnToConnectedAccounts', 'true');
     
     // Use environment variable or fallback to localhost
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    const apiUrl = process.env.REACT_APP_API_URL;
     const authUrl = `${apiUrl}/api/auth/google`;
     
     console.log('🚀 Redirecting to:', authUrl);

@@ -32,7 +32,7 @@ export default function LandingPage({ onLogin }) {
     if (onLogin) {
       onLogin();
     } else {
-      window.location.href = `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/auth/google`;
+      window.location.href = `${process.env.REACT_APP_API_URL || 'https://email-cleanup-saas-v2-2.onrender.com'}/auth/google`;
     }
   };
 

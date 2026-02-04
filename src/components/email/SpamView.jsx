@@ -19,7 +19,7 @@ function SpamView() {
     try {
       console.log('🚨 Fetching spam emails...');
       
-      const response = await fetch('/api/email/gmail/folder/spam?maxResults=100', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/gmail/folder/spam?maxResults=100`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ function SpamView() {
     try {
       setPreviewLoading(true);
       
-      const response = await fetch(`/api/email/message/${emailId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/message/${emailId}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -116,7 +116,7 @@ function SpamView() {
     if (!window.confirm('Mark this email as not spam?')) return;
     
     try {
-      const response = await fetch(`/api/email/${emailId}/not-spam`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/${emailId}/not-spam`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -149,7 +149,7 @@ function SpamView() {
     if (!window.confirm('Permanently delete this email? This cannot be undone!')) return;
     
     try {
-      const response = await fetch(`/api/email/${emailId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/${emailId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {

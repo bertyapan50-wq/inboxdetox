@@ -32,7 +32,7 @@ export default function Preferences() {
   const loadPreferences = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/settings/preferences', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/settings/preferences', {
         credentials: 'include'
       });
       const data = await response.json();
@@ -58,7 +58,7 @@ export default function Preferences() {
   const savePreferences = async () => {
     setSaving(true);
     try {
-      const response = await fetch('/api/settings/preferences', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/settings/preferences', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -87,7 +87,7 @@ export default function Preferences() {
     
     setSaving(true);
     try {
-      const response = await fetch('/api/settings/preferences/reset', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/settings/preferences/reset', {
         method: 'POST',
         credentials: 'include'
       });

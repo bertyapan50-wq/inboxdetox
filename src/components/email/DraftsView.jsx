@@ -19,7 +19,7 @@ function DraftsView() {
     try {
       console.log('📧 Fetching drafts from /api/email/drafts');
       
-      const response = await fetch('/api/email/drafts', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/drafts`, {
         credentials: 'include'
       });
       

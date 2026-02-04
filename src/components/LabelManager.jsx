@@ -17,7 +17,7 @@ const LabelManager = ({ isOpen, onClose }) => {
   const fetchLabels = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/labels', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/labels', {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ const LabelManager = ({ isOpen, onClose }) => {
 
     try {
       setLoading(true);
-      const response = await fetch('/api/labels', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/labels', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ const LabelManager = ({ isOpen, onClose }) => {
 
     try {
       setLoading(true);
-      const response = await fetch(`/api/labels/${labelId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/labels/${labelId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {

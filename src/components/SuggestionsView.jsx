@@ -15,7 +15,7 @@ function SuggestionsView() {
       
       console.log('💡 Loading AI suggestions...');
       
-      const response = await fetch('/api/email/suggestions/analyze', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/analyze`, {
         method: 'POST',
         credentials: 'include',
         headers: {

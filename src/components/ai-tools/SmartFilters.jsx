@@ -216,7 +216,7 @@ const confirmDelete = async () => {
     // If synced to Gmail, delete from Gmail too
     if (filter.syncedToGmail && filter.gmailFilterId) {
       try {
-        const response = await fetch(`/api/filters/${filter.gmailFilterId}`, {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/filters/${filter.gmailFilterId}`, {
           method: 'DELETE',
           credentials: 'include'
         });
@@ -237,7 +237,7 @@ const confirmDelete = async () => {
     try {
       setTestResults({ loading: true, filter: filter, emails: [], count: 0 });
 
-      const response = await fetch('/api/filters/test', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/filters/test', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -280,7 +280,7 @@ const confirmDelete = async () => {
       }
     }
     
-    const response = await fetch('/api/filters/create', {
+    const response = await fetch('${process.env.REACT_APP_API_URL}/api/filters/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -355,7 +355,7 @@ const confirmDelete = async () => {
     try {
       console.log('⚡ Applying filter to existing emails:', filter.name);
       
-      const response = await fetch('/api/filters/apply', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/filters/apply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

@@ -18,7 +18,7 @@ const AIInsights = ({ emails, onRefresh }) => {
       // ✅ Call smart AI analysis API
       console.log('🧠 Calling smart AI analysis...');
       
-      const response = await fetch('http://localhost:5000/api/email/analyze-grouped', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/analyze-grouped`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -120,9 +120,9 @@ const AIInsights = ({ emails, onRefresh }) => {
       let action = previewModal.suggested_actions[0];
       
       if (action === 'DELETE_ALL') {
-        endpoint = 'http://localhost:5000/api/email/delete';
+        endpoint = `${process.env.REACT_APP_API_URL}/api/email/delete`;
       } else if (action === 'ARCHIVE_ALL' || action === 'MUTE_SENDER') {
-        endpoint = 'http://localhost:5000/api/email/archive';
+        endpoint = `${process.env.REACT_APP_API_URL}/api/email/archive`;
       }
 
       console.log('📤 Calling:', endpoint);

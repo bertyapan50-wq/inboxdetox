@@ -31,7 +31,7 @@ const EmailViewer = ({ email, onClose }) => {
     }
 
     try {
-      const url = `http://localhost:5000/api/email/message/${email.id}`;
+      const url = `${process.env.REACT_APP_API_URL}/api/email/message/${email.id}`;
       console.log('🔍 Fetching email from:', url);
       
       const response = await fetch(url, {
@@ -79,7 +79,7 @@ const EmailViewer = ({ email, onClose }) => {
     setSuccessMessage('');
     
     try {
-      let url = `http://localhost:5000/api/email/${email.id}/${action}`;
+      let url = `${process.env.REACT_APP_API_URL}/api/email/${email.id}/${action}`;
       let body = {};
       
       if (action === 'star') {
@@ -133,7 +133,7 @@ const EmailViewer = ({ email, onClose }) => {
     setSuccessMessage('');
     
     try {
-      const response = await fetch(`http://localhost:5000/api/email/${email.id}/reply`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/${email.id}/reply`, {
         method: 'POST',
         credentials: 'include',
         headers: {

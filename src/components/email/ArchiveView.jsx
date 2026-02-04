@@ -15,7 +15,7 @@ function ArchiveView() {
       
       console.log('📦 Loading archived emails...');
       
-      const response = await fetch('/api/email/gmail/folder/archive?maxResults=100', {
+      const response = await  fetch(`${process.env.REACT_APP_API_URL}/api/email/gmail/folder/archive?maxResults=100`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -50,7 +50,7 @@ function ArchiveView() {
     try {
       setPreviewLoading(true);
       
-      const response = await fetch(`/api/email/message/${emailId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/message/${emailId}`, {
         method: 'GET',
         credentials: 'include',
         headers: {

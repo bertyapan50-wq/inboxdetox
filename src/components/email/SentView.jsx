@@ -17,7 +17,7 @@ function SentView() {
     setError(null);
     
     try {
-      const response = await fetch('/api/email/gmail/folder/sent', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/gmail/folder/sent?maxResults=100`, {
         credentials: 'include'
       });
       
@@ -63,7 +63,7 @@ function SentView() {
     try {
       setPreviewLoading(true);
       
-      const response = await fetch(`/api/email/message/${emailId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/message/${emailId}`, {
         method: 'GET',
         credentials: 'include',
         headers: {

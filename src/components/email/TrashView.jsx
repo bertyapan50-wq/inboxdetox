@@ -19,7 +19,7 @@ function TrashView() {
     try {
       console.log('🗑️ Fetching trash emails...');
       
-      const response = await fetch('/api/email/gmail/folder/trash?maxResults=100', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/gmail/folder/trash?maxResults=100`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ function TrashView() {
     try {
       setPreviewLoading(true);
       
-      const response = await fetch(`/api/email/message/${emailId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/message/${emailId}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -116,7 +116,7 @@ function TrashView() {
     if (!window.confirm('Restore this email to inbox?')) return;
     
     try {
-      const response = await fetch(`/api/email/${emailId}/restore`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/${emailId}/restore`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -152,7 +152,7 @@ function TrashView() {
     if (!window.confirm('Permanently delete this email? ')) return;
     
     try {
-      const response = await fetch(`/api/email/${emailId}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/${emailId}`, {
         method: 'DELETE',
         credentials: 'include',
         headers: {
@@ -183,7 +183,7 @@ function TrashView() {
     if (!window.confirm(`Permanently delete all ${trashEmails.length} emails in trash? This cannot be undone!`)) return;
     
     try {
-      const response = await fetch('/api/email/trash/empty', {
+      const response = await fetch('${process.env.REACT_APP_API_URL}/api/email/trash/empty', {
         method: 'POST',
         credentials: 'include',
         headers: {

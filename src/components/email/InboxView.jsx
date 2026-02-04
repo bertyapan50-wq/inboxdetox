@@ -147,7 +147,7 @@ const [sendingReply, setSendingReply] = useState(false);
     console.log('📧 Loading full email content for:', emailId);
     
     // ✅ Call the new backend endpoint
-    const response = await fetch(`http://localhost:5000/api/email/message/${emailId}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/message/${emailId}`, {
   credentials: 'include'
 });
     if (!response.ok) {
@@ -189,7 +189,7 @@ const handleReply = async () => {
   setSendingReply(true);
 
   try {
-    const response = await fetch('http://localhost:5000/api/email/reply', {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/reply`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -825,7 +825,7 @@ const handleReply = async () => {
       if (!forwardTo) return;
 
       try {
-        const res = await fetch("http://localhost:5000/api/email/forward", {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/email/forward`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

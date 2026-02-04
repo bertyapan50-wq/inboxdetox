@@ -50,7 +50,7 @@ const FollowUpManager = ({ selectedEmail, onClose }) => {
 
     try {
       setLoading(true);
-      const response = await fetch('/api/followups/create', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/followups/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
