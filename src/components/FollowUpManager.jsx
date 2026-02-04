@@ -20,7 +20,7 @@ const FollowUpManager = ({ selectedEmail, onClose }) => {
   const fetchFollowUps = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/followups', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/followups`, {
         credentials: 'include'
       });
       
@@ -77,7 +77,7 @@ const FollowUpManager = ({ selectedEmail, onClose }) => {
   const handleComplete = async (id) => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/followups/${id}/complete`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/followups/${id}/complete`, {
         method: 'PATCH',
         credentials: 'include'
       });
@@ -98,7 +98,7 @@ const FollowUpManager = ({ selectedEmail, onClose }) => {
 
     try {
       setLoading(true);
-      const response = await fetch(`/api/followups/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/followups/${id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
