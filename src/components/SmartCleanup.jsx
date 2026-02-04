@@ -165,7 +165,7 @@ const SmartCleanupFeature = ({ user }) => {
     try {
       console.log('🔍 Step 1: Loading emails from Gmail...');
       
-      const emailsResponse = await fetch('${process.env.REACT_APP_API_URL}/api/email/emails', {
+      const emailsResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/email/emails`, {
         credentials: 'include'
       });
       
@@ -271,7 +271,7 @@ const SmartCleanupFeature = ({ user }) => {
         }).sort((a, b) => b.confidenceScore - a.confidenceScore);
       };
       
-      const analyzeResponse = await fetch('${process.env.REACT_APP_API_URL}/api/email/analyze', {
+      const analyzeResponse = await fetch(`${process.env.REACT_APP_API_URL}/api/email/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -366,7 +366,7 @@ const SmartCleanupFeature = ({ user }) => {
     try {
       console.log('📦 Calling /api/email/archive...');
       
-      const response = await fetch('${process.env.REACT_APP_API_URL}/api/email/archive', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/archive`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -419,7 +419,7 @@ const SmartCleanupFeature = ({ user }) => {
     try {
       console.log('🗑️ Calling /api/email/delete...');
       
-      const response = await fetch('${process.env.REACT_APP_API_URL}/api/email/delete', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/email/delete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
