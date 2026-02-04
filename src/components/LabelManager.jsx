@@ -17,7 +17,7 @@ const LabelManager = ({ isOpen, onClose }) => {
   const fetchLabels = async () => {
     try {
       setLoading(true);
-      const response = await fetch('${process.env.REACT_APP_API_URL}/api/labels', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/labels`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
