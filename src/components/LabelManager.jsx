@@ -53,7 +53,7 @@ const LabelManager = ({ isOpen, onClose }) => {
 
     try {
       setLoading(true);
-      const response = await fetch('${process.env.REACT_APP_API_URL}/api/labels', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/labels`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
