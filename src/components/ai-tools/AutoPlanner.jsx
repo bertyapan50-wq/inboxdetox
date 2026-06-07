@@ -201,7 +201,7 @@ const handleDeleteTask = async (taskId) => {
           
           <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
             <div className="text-sm text-gray-600 mb-1">Scheduled Today</div>
-            <div className="text-3xl font-bold text-gray-800">{scheduledTasks.length}</div>
+            <div className="text-3xl font-bold text-gray-800">{schedule.length}</div>
           </div>
           
           <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
@@ -253,7 +253,7 @@ const handleDeleteTask = async (taskId) => {
         </div>
 
          {/* Info Banner */}
-{pendingTasks.length === 0 && scheduledTasks.length === 0 && tasks.length === 0 && (
+{pendingTasks.length === 0 && schedule.length === 0 && tasks.length === 0 && (
   <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-6 flex items-start gap-4">
     <AlertCircle className="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" />
     <div>
